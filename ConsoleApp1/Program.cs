@@ -114,9 +114,13 @@ namespace ConsoleApp1
                     {
                         max = 2 + (min);
                     }
-
-                    s1 = s1.Replace(s1[(rand.Next(min, max))], s2[s1.Length-i]);
-
+                    try
+                    {
+                        s1 = s1.Replace(s1[(rand.Next(min, max))], s2[s1.Length - i]);
+                    } catch (Exception)
+                    {
+                        Console.WriteLine("Some exception");
+                    }
                 }
 
                 _sOut = s1;
@@ -126,36 +130,73 @@ namespace ConsoleApp1
 
         public class View
         {
-            int crtop_buf = 0;
+            int crtop_buf = 2;
 
             ConsoleColor[] clr = (ConsoleColor[])ConsoleColor.GetValues(typeof(ConsoleColor));
 
-            public void displayGUIDraw()
+            void drawTitle(int x, int y, int curbuf)
             {
-                crtop_buf = Console.CursorTop;
-
-                if (crtop_buf == 1)
+                try
                 {
-                    crtop_buf = 2;
+
+                    Console.SetCursorPosition(x, y);
+                    Console.BackgroundColor = clr[15];
+                    Console.ForegroundColor = clr[0];
+                    Console.Write("Another Calc Game by ");
+                    Console.Write(".");
+                    Console.ForegroundColor = clr[12];
+                    Console.Write("ten");
+                    Console.ForegroundColor = clr[0];
+                    Console.Write(" minutes stories." +
+                        "                                                   " +
+                        "    "); 
+                    //Console.ResetColor();
+
+
+                    Console.SetCursorPosition(0, 1);
+                    Console.ResetColor();
+                    Console.WriteLine("                     ");
+
+                    Console.SetCursorPosition(0,curbuf);
                 }
+                catch (Exception)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Error of GUI draw");
+                }
+            }
 
-                Console.SetCursorPosition(1, 0);
+
+            public void initGUIDraw()
+            {
+                //crtop_buf = Console.CursorTop;
                 
-                Console.Write(".");
-                Console.ForegroundColor = clr[12];
-                Console.Write("ten");
-                Console.ResetColor();
-                Console.Write(" minutes stories.");
-                Console.ResetColor();
-
-                Console.CursorTop = crtop_buf+1;
-
-                Console.SetCursorPosition(1, Console.CursorTop);
+                Console.BufferHeight = 30;
+                Console.BufferWidth =  120;
+                Console.WindowWidth = 100;
+                drawTitle(0, 0, crtop_buf);
 
             }
 
+            public void redrawGUI()
+            {
+                crtop_buf = Console.CursorTop;
+
+                drawTitle(0, 0, crtop_buf);
+            }
+
+            void dispSizes()
+            {
+                Console.WriteLine("Win height: " + Console.WindowHeight);
+                Console.WriteLine("Win width: " + Console.WindowWidth);
+                Console.WriteLine("Current cursor top (y): " + Console.CursorTop);
+                Console.WriteLine("Buffer size x and y " + Console.BufferWidth + " " + Console.BufferHeight);
+                Console.WriteLine();
+            }  
+
             public void displayEqual(string str)
             {
+                //dispSizes();
                 Console.WriteLine("Решите уравнение: ");
                 Console.WriteLine(str);
             }
@@ -180,8 +221,6 @@ namespace ConsoleApp1
 
             while (q == false) {
 
-                b.displayGUIDraw();
-
                 string str;
 
                 int answ;
@@ -189,6 +228,8 @@ namespace ConsoleApp1
                 char _q;
 
                 b.displayEqual(a.generateMathEqual());
+
+                b.redrawGUI();
 
                 answ = Convert.ToInt32(str = c.waitForInput());
 
@@ -215,6 +256,7 @@ namespace ConsoleApp1
                     {
 
                     }
+                    
                 }
             }
         }
@@ -226,7 +268,8 @@ namespace ConsoleApp1
             Controller input = new Controller();
             Model mathEqual = new Model();
             View disp = new View();
-                    
+
+            disp.initGUIDraw();
 
             GameLoop(mathEqual, disp, input);
 
