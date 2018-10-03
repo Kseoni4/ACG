@@ -1,225 +1,16 @@
 ﻿using System;
 
+
 namespace ConsoleApp1
 {
-    class Program
+    class game
     {
-        public class Controller
-        {
-            public string readfile()
-            {
-                string out_string = "";
-                
-                // reading file code here
-
-                return out_string;
-            }
-
-            public string waitForInput()
-            {
-                string line;
-
-                
-
-                Console.Write(">");
-
-                line = Console.ReadLine();
-
-                if (line.Length > 0) {
-
-                    return line;
-
-                }
-                else
-                    return "0";
-
-            }
-        }
-
-        public class Model
-        {
-            public byte lvl = 1;
-
-            public int gameScore = 0;
-
-            public int[] mbrs = new int[5];
-
-            public int summ = 0;
-
-            Random rand = new Random();
-
-            public string generateMathEqual()
-            {
-                byte i = 0;
-
-                int rnd = 0;
-
-                summ = 0;
-
-                string _equalOut = "";
-
-                 for (i = 0; i < 3; i++)
-                {
-
-                    rnd = rand.Next(5 * lvl);
-                    mbrs[i] = rnd;
-                }
-                
-                for (i = 0; i <= mbrs.Length-1; i++)
-                {
-                    summ = summ + mbrs[i];
-                }
-
-                for (i = 0; i <= mbrs.Length-3; i++)
-                {
-                    _equalOut = _equalOut.Insert(_equalOut.Length, (mbrs[i].ToString()));
-                    if (i <= mbrs.Length - 4)
-                    {
-                        _equalOut = _equalOut.Insert(_equalOut.Length, " + ");
-                    }
-                }
-
-                if (_equalOut != "")
-                {
-                    _equalOut = _equalOut.Insert(_equalOut.Length, " = ?");
-                //   _equalOut = _equalOut.Insert(_equalOut.Length, summ.ToString());
-
-                    return _equalOut;
-                }
-
-                else
-                    return _equalOut = "Empty string";
-            }
-
-            public bool compareAnsw(int input)
-            {
-                if (input == summ)
-                {
-                    return true;
-                }
-                else
-                    return false;
-            }
-
-            public string interruptString(string s1, string s2)
-            {
-                string _sOut = "";
-                int i = 0, min = 0, max = 0;
-
-                for (i = s1.Length; i > 0; i--) {
-
-                    min = s1.Length - i;
-
-                    if (min < s1.Length - 1)
-                    {
-                        max = 2 + (min);
-                    }
-                    try
-                    {
-                        s1 = s1.Replace(s1[(rand.Next(min, max))], s2[s1.Length - i]);
-                    } catch (Exception)
-                    {
-                        Console.WriteLine("Some exception");
-                    }
-                }
-
-                _sOut = s1;
-                return _sOut;
-            }
-        }
-
-        public class View
-        {
-            int crtop_buf = 2;
-
-            ConsoleColor[] clr = (ConsoleColor[])ConsoleColor.GetValues(typeof(ConsoleColor));
-
-            void drawTitle(int x, int y, int curbuf)
-            {
-                try
-                {
-
-                    Console.SetCursorPosition(x, y);
-                    Console.BackgroundColor = clr[15];
-                    Console.ForegroundColor = clr[0];
-                    Console.Write("Another Calc Game by ");
-                    Console.Write(".");
-                    Console.ForegroundColor = clr[12];
-                    Console.Write("ten");
-                    Console.ForegroundColor = clr[0];
-                    Console.Write(" minutes stories." +
-                        "                                                   " +
-                        "    "); 
-                    //Console.ResetColor();
-
-
-                    Console.SetCursorPosition(0, 1);
-                    Console.ResetColor();
-                    Console.WriteLine("                     ");
-
-                    Console.SetCursorPosition(0,curbuf);
-                }
-                catch (Exception)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Error of GUI draw");
-                }
-            }
-
-
-            public void initGUIDraw()
-            {
-                //crtop_buf = Console.CursorTop;
-                
-                Console.BufferHeight = 30;
-                Console.BufferWidth =  120;
-                Console.WindowWidth = 100;
-                drawTitle(0, 0, crtop_buf);
-
-            }
-
-            public void redrawGUI()
-            {
-                crtop_buf = Console.CursorTop;
-
-                drawTitle(0, 0, crtop_buf);
-            }
-
-            void dispSizes()
-            {
-                Console.WriteLine("Win height: " + Console.WindowHeight);
-                Console.WriteLine("Win width: " + Console.WindowWidth);
-                Console.WriteLine("Current cursor top (y): " + Console.CursorTop);
-                Console.WriteLine("Buffer size x and y " + Console.BufferWidth + " " + Console.BufferHeight);
-                Console.WriteLine();
-            }  
-
-            public void displayEqual(string str)
-            {
-                //dispSizes();
-                Console.WriteLine("Решите уравнение: ");
-                Console.WriteLine(str);
-            }
-
-            public void displayResult(bool cmp, int score, byte lvl)
-            {
-                switch (cmp) {
-                    case true:
-                        Console.WriteLine("It is correct! Your score is " + score + " and level up to " + lvl);
-                        break;
-                    case false:
-                        Console.WriteLine("Not correct! Your score is " + score);
-                        break;
-                }
-            }
-        }
-
-
-        public static void GameLoop(Model a, View b, Controller c)
+        public static void GameLoop(Model m, View v, Controller c)
         {
             bool q = false;
 
-            while (q == false) {
+            while (q == false)
+            {
 
                 string str;
 
@@ -227,9 +18,9 @@ namespace ConsoleApp1
 
                 char _q;
 
-                b.displayEqual(a.generateMathEqual());
+                v.displayEqual(m.generateMathEqual(), null);
 
-                b.redrawGUI();
+                v.redrawGUI();
 
                 answ = Convert.ToInt32(str = c.waitForInput());
 
@@ -239,29 +30,32 @@ namespace ConsoleApp1
                 }
                 else
                 {
-                    if (a.compareAnsw(answ) == true)
+                    if (m.compareAnsw(answ) == true)
                     {
-                        a.lvl++;
-                        a.gameScore += 10;
-                        b.displayResult(true, a.gameScore, a.lvl);
+                        m.lvl++;
+                        m.gameScore += 10;
+                        v.displayResult(true, m.gameScore, m.lvl);
                     }
                     else
                     {
-                        a.gameScore = (a.gameScore >= 10) ? a.gameScore -= 10 : a.gameScore;
-                        b.displayResult(false, a.gameScore, a.lvl);
+                        m.gameScore = (m.gameScore >= 10) ? m.gameScore -= 10 : m.gameScore;
+                        v.displayResult(false, m.gameScore, m.lvl);
 
                     }
 
-                    if (a.lvl > 5)
+                    if (m.lvl > 1)
                     {
-
+                        //Console.WriteLine(c.readfile(@"..\interrupts.txt"));
+                        //v.displayEqual(m.generateMathEqual(), m.interruptString(v.tConsts[0], m.getInputStringFromFile(c.readfile(@"ConsoleApp1\texts\interrupts.txt"))));
                     }
-                    
+
                 }
             }
         }
+    }
 
-
+    class mainProgramm
+    {
         static void Main(string[] args)
         {
 
@@ -271,10 +65,9 @@ namespace ConsoleApp1
 
             disp.initGUIDraw();
 
-            GameLoop(mathEqual, disp, input);
+            game.GameLoop(mathEqual, disp, input);
 
         }
-
     }
 }
 
