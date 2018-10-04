@@ -13,9 +13,7 @@ namespace ConsoleApp1
             {
 
                 string str;
-
                 int answ;
-
                 char _q;
 
                 v.displayEqual(m.generateMathEqual(), null);
@@ -45,11 +43,41 @@ namespace ConsoleApp1
 
                     if (m.lvl > 1)
                     {
+                        Console.WriteLine(m.getInputStringFromFile(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt")));
+                        //chooseText(m.getInputStringFromFile(c.readfile(@"ConsoleApp1\texts\interrupts.txt")), c, m, v);
                         //Console.WriteLine(c.readfile(@"..\interrupts.txt"));
                         //v.displayEqual(m.generateMathEqual(), m.interruptString(v.tConsts[0], m.getInputStringFromFile(c.readfile(@"ConsoleApp1\texts\interrupts.txt"))));
                     }
 
                 }
+            }
+        }
+        static void chooseText(string _inType, Controller c, Model m, View v)
+        {
+
+            short num = 0;
+
+            for (int i = 0; i <= _inType.Length; i++)
+            {
+                if(_inType[i] == '_')
+                {
+                    num = Convert.ToInt16(_inType[i + 1]);
+                    break;
+                }
+            }
+
+            switch (_inType)
+            {
+                case "INTERRUPT":
+                    {
+                      v.displayEqual(m.generateMathEqual(), m.interruptString(v.tConsts[0], m.getInputStringFromFile(c.readfile(@"ConsoleApp1\texts\interrupts.txt"))));
+                        break;
+                    }
+                case "FRAME":
+                    {
+                        //v.displayFrame();
+                        break;
+                    }
             }
         }
     }

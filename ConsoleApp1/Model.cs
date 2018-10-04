@@ -99,7 +99,17 @@ namespace ConsoleApp1
         public string getInputStringFromFile(string str)
         {
             string _s2Out = "";
-
+            byte i = 0, j = 0;
+            while (str[i] != ']')
+            {
+                if (str[i] != '[')
+                {
+                    _s2Out = _s2Out.Insert(j, Convert.ToString(str[i]));
+                    i++;
+                    j++;
+                }
+                else i++;
+            }
             return _s2Out;
         }
     }
