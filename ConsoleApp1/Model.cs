@@ -96,21 +96,47 @@ namespace ConsoleApp1
             return _sOut;
         }
 
-        public string getInputStringFromFile(string str)
+        public string getInputTypeStringFromFile(string str)
         {
-            string _s2Out = "";
+            string _s2TypeOut = "";
             byte i = 0, j = 0;
             while (str[i] != ']')
             {
-                if (str[i] != '[')
+                if (str[i] == '[')
                 {
-                    _s2Out = _s2Out.Insert(j, Convert.ToString(str[i]));
+                    while (str[i] != ']')
+                    {
+                        if (str[i] != '[')
+                        {
+                            _s2TypeOut = _s2TypeOut.Insert(j, Convert.ToString(str[i]));
+                            i++;
+                            j++;
+                        }
+                        else i++;
+                    }
+                }
+                else { i++; }
+            }
+            game.tBuf += i + 1;
+            return _s2TypeOut;
+        }
+        public string getInputTextStringFromFile(string str)
+        {
+            string _s2TextOut = "";
+            byte i = 0, j = 0;
+            while (str[i] != '\0')
+            {
+                if (str[i] != '1' && str[i] != ']' && str[i] != '\n' && str[i] != '\r')
+                {
+                    _s2TextOut = _s2TextOut.Insert(j, Convert.ToString(str[i]));
                     i++;
                     j++;
                 }
                 else i++;
             }
-            return _s2Out;
+
+            game.tBuf += i + 1;
+            return _s2TextOut.ToUpper();
         }
     }
 }

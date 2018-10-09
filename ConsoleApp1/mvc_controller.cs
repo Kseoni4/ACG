@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ConsoleApp1
 {
-    public class Controller
+    partial class Controller
     {
         public string readfile(string fName)
         {
@@ -19,16 +19,23 @@ namespace ConsoleApp1
 
                     byte[] byteArray = new byte[fstream.Length];
 
-                    fstream.Read(byteArray, 0, byteArray.Length);
+                    if (game.tBuf < fstream.Length)
+                    {
 
-                    out_string = System.Text.Encoding.Default.GetString(byteArray);
+                        fstream.Seek(game.tBuf, SeekOrigin.Begin);
+
+                        fstream.Read(byteArray, 0, byteArray.Length);
+                        
+                        out_string = System.Text.Encoding.UTF8.GetString(byteArray);
+
+                        //game.tBuf = Convert.ToInt16(fstream.Position);
+                    }
+                    else return "End of file";
                 }
             } catch (Exception)
             {
                 out_string = "Error for open file";
             }
-
-           
 
             return out_string;
         }
