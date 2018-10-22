@@ -46,7 +46,7 @@ namespace ConsoleApp1
                     if (m.lvl > 1)
                     {
                         //Console.WriteLine(m.getInputTypeStringFromFile(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt")) + ' ' + game.tBuf);
-                        v.displayFrame(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt"));
+                        //v.displayFrame(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt"));
                         chooseText(m.getInputTypeStringFromFile(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt")), c, m, v);
                         //Console.WriteLine(c.readfile(@"..\interrupts.txt"));
                         //v.displayEqual(m.generateMathEqual(), m.interruptString(v.tConsts[0], m.getInputStringFromFile(c.readfile(@"ConsoleApp1\texts\interrupts.txt"))));
@@ -62,6 +62,10 @@ namespace ConsoleApp1
 
             for (int i = 0; i <= _inType.Length; i++)
             {
+                if (_inType == "end of file") {
+                    v.displayFrame("end of file");
+                    break;
+                }
                 if (_inType[i] == '\r') { _inType = _inType.Replace('\r', ' '); }
                 if (_inType[i] == '\n') { _inType = _inType.Replace('\n', ' '); }
                 if (_inType[i] == '_')
@@ -85,7 +89,7 @@ namespace ConsoleApp1
                         break;
                     }
             }
-            v.displayFrame(_inType);
+            //v.displayFrame(_inType);
         }
     }
 

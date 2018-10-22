@@ -72,24 +72,30 @@ namespace ConsoleApp1
         public string interruptString(string s1, string s2)
         {
             string _sOut = "";
-            int i = 0, min = 0, max = 0;
+            int i = 0, j = 1, min = 0, max = 0, s1L = 0, _rnd;
+            s1L = s1.Length;
 
-            for (i = s1.Length; i > 0; i--)
+            for (i = s1L; i > 0;i--)
             {
 
-                min = s1.Length - i;
+                //min = s1.Length - s1L;
 
                 if (min < s1.Length - 1)
                 {
-                    max = 2 + (min);
+                    max = j + (s1.Length-s1L);
                 }
                 try
                 {
-                    s1 = s1.Replace(s1[(rand.Next(min, max))], s2[s1.Length - i]);
+                    _rnd = rand.Next(min, max);
+                    s1 = s1.Insert(_rnd, Convert.ToString(s2[s1.Length - s1L]));
+                    min = max;
+                    j++;
+
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Some exception");
+                    //Console.WriteLine("Some exception");
+                    
                 }
             }
             _sOut = s1;
@@ -100,8 +106,15 @@ namespace ConsoleApp1
         {
             string _s2TypeOut = "";
             byte i = 0, j = 0;
+
             while (str[i] != ']')
             {
+
+                if (str[i] == '\0')
+                {
+                    return "end of file";
+                }
+
                 if (str[i] == '[')
                 {
                     while (str[i] != ']')
