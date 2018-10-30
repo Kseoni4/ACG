@@ -129,14 +129,27 @@ namespace ACG
                     }
                 }
                 else { i++; }
+
             }
-            game.tBuf += i + 1;
+            game.tBuf += i;
+            for (i = 0; i <= _s2TypeOut.Length; i++)
+            {
+                if (_s2TypeOut[i] == '_')
+                {
+                    //game.numI = _s2TypeOut[i + 1];
+                    _s2TypeOut = _s2TypeOut.Remove(i);
+                    game.tBuf += (_s2TypeOut.Length - i);
+
+                    break;
+                }
+            }
+            game.tBuf += 1;
             return _s2TypeOut;
         }
         public string getInputTextStringFromRaw(string str)
         {
             string _s2TextOut = "";
-            byte i = 0, j = 0, f = 0;
+            int i = game.tBuf, j = 0, f = 0;
             while (f < 1)
             {
                 if (str[i] != '1' && str[i] != ']' && str[i] != '\n' && str[i] != '\r')
@@ -149,7 +162,7 @@ namespace ACG
                 if (str[i] == '\r') f++;
             }
 
-            game.tBuf += i + 1;
+            //game.tBuf += i + 1;
             return _s2TextOut.ToUpper();
         }
     }

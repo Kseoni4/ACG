@@ -4,17 +4,21 @@ namespace ACG
 {
     class game
     {
+        public static int numI = 0;
+
+        public static int numF = 0;
+
         public static int tBuf = 0;
 
-        public static string[] massTypes;
+        public static string[] massTypes = new string[100];
 
         public static int iT = 0;
 
-        public static string[] massIText;
+        public static string[] massIText = new string[500];
 
         public static int iI = 0;
 
-        public static string[] massFText;
+        public static string[] massFText = new string[500];
 
         public static int iF = 0;
 
@@ -87,7 +91,7 @@ namespace ACG
         static void chooseText(string _inType, Controller c, Model m, View v)
         {
 
-            char num = '0';
+            //char num = '0';
             byte _type = 0;
             _type = Convert.ToByte(_inType.Length); 
 
@@ -101,7 +105,7 @@ namespace ACG
                 if (_inType[i] == '\n') { _inType = _inType.Replace('\n', ' '); }
                 if (_inType[i] == '_')
                 {
-                    num = _inType[i + 1];
+                    //num = _inType[i + 1];
                     _inType = _inType.Remove(i);
                     tBuf += (_type - i);
 
