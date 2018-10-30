@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleApp1
+namespace ACG
 {
     partial class Model
     {
@@ -13,7 +13,7 @@ namespace ConsoleApp1
         public int[] mbrs = new int[5];
 
         public int summ = 0;
-
+       
         Random rand = new Random();
 
         public string generateMathEqual()
@@ -102,7 +102,7 @@ namespace ConsoleApp1
             return _sOut;
         }
 
-        public string getInputTypeStringFromFile(string str)
+        public string getInputTypeStringFromRaw(string str)
         {
             string _s2TypeOut = "";
             byte i = 0, j = 0;
@@ -133,11 +133,11 @@ namespace ConsoleApp1
             game.tBuf += i + 1;
             return _s2TypeOut;
         }
-        public string getInputTextStringFromFile(string str)
+        public string getInputTextStringFromRaw(string str)
         {
             string _s2TextOut = "";
-            byte i = 0, j = 0;
-            while (str[i] != '\0')
+            byte i = 0, j = 0, f = 0;
+            while (f < 1)
             {
                 if (str[i] != '1' && str[i] != ']' && str[i] != '\n' && str[i] != '\r')
                 {
@@ -146,6 +146,7 @@ namespace ConsoleApp1
                     j++;
                 }
                 else i++;
+                if (str[i] == '\r') f++;
             }
 
             game.tBuf += i + 1;

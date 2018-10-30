@@ -1,25 +1,54 @@
 ﻿using System;
 
-
-namespace ConsoleApp1
+namespace ACG
 {
     class game
     {
         public static int tBuf = 0;
 
+        public static string[] massTypes;
+
+        public static int iT = 0;
+
+        public static string[] massIText;
+
+        public static int iI = 0;
+
+        public static string[] massFText;
+
+        public static int iF = 0;
+
+        public static void init(Model m, View v, Controller c)
+        {
+
+            string raw_string = c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt");
+
+            while (massTypes[iT] != "end of file")
+            {
+                massTypes[iT] = m.getInputTypeStringFromRaw(raw_string);
+
+                switch (massTypes[iT])
+                {
+                    case @"INTERRUPT": { massIText[iI] = m.getInputTextStringFromRaw(raw_string); iI++; break; }
+                    case @"FRAME": { massFText[iF] = m.getInputTextStringFromRaw(raw_string); iF++; break; }
+                }
+                iT++;
+            }
+
+        }
+
         public static void GameLoop(Model m, View v, Controller c)
         {
             bool q = false;
 
+            string str = "";
+            int answ = 0;
+            char _q = ' ';
+
+            v.displayEqual(m.generateMathEqual(), null);
+
             while (q == false)
             {
-
-                string str;
-                int answ;
-                char _q;
-
-                v.displayEqual(m.generateMathEqual(), null);
-
                 v.redrawGUI();
 
                 answ = Convert.ToInt32(str = c.waitForInput());
@@ -47,7 +76,7 @@ namespace ConsoleApp1
                     {
                         //Console.WriteLine(m.getInputTypeStringFromFile(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt")) + ' ' + game.tBuf);
                         //v.displayFrame(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt"));
-                        chooseText(m.getInputTypeStringFromFile(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt")), c, m, v);
+                        //chooseText(m.getInputTypeStringFromFile(c.readfile()), c, m, v);
                         //Console.WriteLine(c.readfile(@"..\interrupts.txt"));
                         //v.displayEqual(m.generateMathEqual(), m.interruptString(v.tConsts[0], m.getInputStringFromFile(c.readfile(@"ConsoleApp1\texts\interrupts.txt"))));
                     }
@@ -59,6 +88,8 @@ namespace ConsoleApp1
         {
 
             char num = '0';
+            byte _type = 0;
+            _type = Convert.ToByte(_inType.Length); 
 
             for (int i = 0; i <= _inType.Length; i++)
             {
@@ -72,6 +103,8 @@ namespace ConsoleApp1
                 {
                     num = _inType[i + 1];
                     _inType = _inType.Remove(i);
+                    tBuf += (_type - i);
+
                     break;
                 }
             }
@@ -80,7 +113,7 @@ namespace ConsoleApp1
             {
                 case @"INTERRUPT":
                     {
-                      v.displayEqual(m.generateMathEqual(), m.interruptString(v.tConsts[0], m.getInputTextStringFromFile(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt"))));
+                      v.displayEqual(m.generateMathEqual(), m.interruptString(v.tConsts[0], m.getInputTextStringFromRaw(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt"))));
                         break;
                     }
                 case @"FRAME":
@@ -93,18 +126,20 @@ namespace ConsoleApp1
         }
     }
 
-    class mainProgramm
+    class mainProgram
     {
         static void Main(string[] args)
         {
 
             Controller input = new Controller();
-            Model mathEqual = new Model();
+            Model modelObj = new Model();
             View disp = new View();
 
             disp.initGUIDraw();
 
-            game.GameLoop(mathEqual, disp, input);
+            game.init(modelObj, disp, input);
+
+            game.GameLoop(modelObj, disp, input);
 
         }
     }

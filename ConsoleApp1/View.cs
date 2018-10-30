@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleApp1
+namespace ACG
 {
     partial class View
     {
         int crtop_buf = 2;
 
         public string[] tConsts = new string[] {
-            "Решите уравнение :"
+            "Решите выражение :"
 
            };
 

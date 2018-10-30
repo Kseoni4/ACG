@@ -3,15 +3,17 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleApp1
+namespace ACG
 {
     partial class Controller
     {
+        public string out_string = "";
+        public string full_string = "";
+        Boolean rO = false;
+
         public string readfile(string fName)
         {
             // reading file code here
-
-            string out_string = "";
 
             try
             {
@@ -27,6 +29,8 @@ namespace ConsoleApp1
                         fstream.Read(byteArray, 0, byteArray.Length);
                         
                         out_string = System.Text.Encoding.UTF8.GetString(byteArray);
+
+                        if (rO != true) { full_string = System.Text.Encoding.UTF8.GetString(byteArray); rO = true; }
 
                         //game.tBuf = Convert.ToInt16(fstream.Position);
                     }
