@@ -5,31 +5,58 @@ namespace ACG
     class game
     {
         public static int numI = 0;
-
         public static int numF = 0;
-
         public static int tBuf = 0;
 
         public static string[] massTypes = new string[100];
-
         public static int iT = 0;
-
         public static string[] massIText = new string[500];
-
         public static int iI = 0;
-
         public static string[] massFText = new string[500];
-
         public static int iF = 0;
+
+        public static char pos = ' ';
+
+        public static bool _notUTF(string rStr)
+        {
+            if (rStr[game.tBuf] != '\r' && rStr[game.tBuf] != '\n')
+                return true;
+            else
+                return false;
+        }
+
+        public static void tBufShift(string rStr, char p)
+        {
+            switch (pos)
+            {
+                case 'T':
+                    {
+                        while (rStr[game.tBuf] != '[')
+                        {
+                            game.tBuf += 1;
+                        }
+                        break;
+                    }
+                case 'S':
+                    {
+                        while (_notUTF(rStr) != true)
+                        {
+                            game.tBuf += 1;
+                        }
+                        break;
+                    }
+            }
+        }
 
         public static void init(Model m, View v, Controller c)
         {
 
             string raw_string = c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt");
 
-            while (massTypes[iT] != "end of file")
+            while ((massTypes[iT] = m.getInputTypeStringFromRaw(raw_string)) != "end of file")
             {
-                massTypes[iT] = m.getInputTypeStringFromRaw(raw_string);
+               
+                tBufShift(raw_string, pos);
 
                 switch (massTypes[iT])
                 {
@@ -48,6 +75,7 @@ namespace ACG
             string str = "";
             int answ = 0;
             char _q = ' ';
+            iT = 0;
 
             v.displayEqual(m.generateMathEqual(), null);
 
@@ -58,7 +86,7 @@ namespace ACG
                 answ = Convert.ToInt32(str = c.waitForInput());
 
                 if ((_q = str.ToCharArray()[0]) == 'q')
-                {
+                { 
                     q = true;
                 }
                 else
@@ -80,9 +108,10 @@ namespace ACG
                     {
                         //Console.WriteLine(m.getInputTypeStringFromFile(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt")) + ' ' + game.tBuf);
                         //v.displayFrame(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt"));
-                        //chooseText(m.getInputTypeStringFromFile(c.readfile()), c, m, v);
+                        chooseText(game.massTypes[iT], c, m, v);
                         //Console.WriteLine(c.readfile(@"..\interrupts.txt"));
                         //v.displayEqual(m.generateMathEqual(), m.interruptString(v.tConsts[0], m.getInputStringFromFile(c.readfile(@"ConsoleApp1\texts\interrupts.txt"))));
+                        iT++;
                     }
 
                 }
@@ -91,33 +120,11 @@ namespace ACG
         static void chooseText(string _inType, Controller c, Model m, View v)
         {
 
-            //char num = '0';
-            byte _type = 0;
-            _type = Convert.ToByte(_inType.Length); 
-
-            for (int i = 0; i <= _inType.Length; i++)
-            {
-                if (_inType == "end of file") {
-                    v.displayFrame("end of file");
-                    break;
-                }
-                if (_inType[i] == '\r') { _inType = _inType.Replace('\r', ' '); }
-                if (_inType[i] == '\n') { _inType = _inType.Replace('\n', ' '); }
-                if (_inType[i] == '_')
-                {
-                    //num = _inType[i + 1];
-                    _inType = _inType.Remove(i);
-                    tBuf += (_type - i);
-
-                    break;
-                }
-            }
-
             switch (_inType)
             {
                 case @"INTERRUPT":
                     {
-                      v.displayEqual(m.generateMathEqual(), m.interruptString(v.tConsts[0], m.getInputTextStringFromRaw(c.readfile(@"C:\Users\ancie\source\repos\ConsoleApp1\ConsoleApp1\texts\interrupts.txt"))));
+                      v.displayEqual(m.generateMathEqual(), m.interruptString(v.tConsts[0], game.massIText[iT]));
                         break;
                     }
                 case @"FRAME":
@@ -125,6 +132,13 @@ namespace ACG
                         //v.displayFrame();
                         break;
                     }
+                case @"end of file":
+                    {
+                        v.displayFrame("end of file");
+                        v.displayEqual(m.generateMathEqual(), null);
+                        break;
+                    }
+                default: { v.displayEqual(m.generateMathEqual(), null); break; }
             }
             //v.displayFrame(_inType);
         }

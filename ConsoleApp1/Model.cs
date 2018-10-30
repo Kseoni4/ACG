@@ -105,12 +105,12 @@ namespace ACG
         public string getInputTypeStringFromRaw(string str)
         {
             string _s2TypeOut = "";
-            byte i = 0, j = 0;
+            int i = game.tBuf, j = 0;
 
             while (str[i] != ']')
             {
 
-                if (str[i] == '\0')
+                if (str[i] == 'z')
                 {
                     return "end of file";
                 }
@@ -131,19 +131,21 @@ namespace ACG
                 else { i++; }
 
             }
-            game.tBuf += i;
+            if (game.tBuf == 0) { game.tBuf += i; }
+            else { game.tBuf += (i - game.tBuf); }
             for (i = 0; i <= _s2TypeOut.Length; i++)
             {
                 if (_s2TypeOut[i] == '_')
                 {
                     //game.numI = _s2TypeOut[i + 1];
                     _s2TypeOut = _s2TypeOut.Remove(i);
-                    game.tBuf += (_s2TypeOut.Length - i);
+                    //game.tBuf += (_s2TypeOut.Length - i);
 
                     break;
                 }
             }
             game.tBuf += 1;
+            game.pos = 'S';
             return _s2TypeOut;
         }
         public string getInputTextStringFromRaw(string str)
@@ -161,8 +163,8 @@ namespace ACG
                 else i++;
                 if (str[i] == '\r') f++;
             }
-
-            //game.tBuf += i + 1;
+            game.pos = 'T';
+            game.tBuf += (i - game.tBuf);
             return _s2TextOut.ToUpper();
         }
     }
